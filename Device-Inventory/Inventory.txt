@@ -1,0 +1,12 @@
+#=====================================================================================#
+#=====================================================================================#
+Device Name: apache
+Device Model: cisco 
+Device Description: apache switch
+Device Owner: apache .inc
+#=====================================================================================#
+Device Name: Peace Health
+Device Model: cisco 
+Device Description: Peace Health Switch
+Device Owner: Peace Health
+#=====================================================================================#
