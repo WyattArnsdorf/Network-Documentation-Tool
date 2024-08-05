@@ -66,7 +66,7 @@ def process_user_login(request_payload):
         return json.dumps({"error": "Username not found"})
 
 
-#initiate the socket context to wait for a reply from the client
+#initiate the socket context to wait for a reply from the client and run the main operations of the service
 context = zmq.Context()
 socket = context.socket(zmq.REP)
 socket.bind("tcp://*:6666")
