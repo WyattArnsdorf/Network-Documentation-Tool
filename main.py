@@ -108,19 +108,24 @@ def login_operations():
         else:
             print("\nIncorrect option, please try again. ")
 
+
 #***************************************************************************# 
 # Type: Helper Function
-# Function Name: Establish Key
-# Description: connects to the convertor microservice to generate a key from the provided password
-# Parameters: password
-# Returns: hex_key
+# Function Name: Send Request
+# Description: connects to the profile management service and creates a request payload to send to the 
+#              server. The payload is a compilation of the requested actions as well as user info. Parameters 
+#              with the "=None" are optional based on the requested action of the server. 
+# Parameters: action, user_id, hex_key, email, year, role
+# Returns: response_date
 #
 #***************************************************************************#
 def send_request(action, user_id=None, hex_key=None, email=None, year=None, role=None):
+    #establish the socket to the server
     context = zmq.Context()
     socket = context.socket(zmq.REQ)
     socket.connect("tcp://localhost:6666")
 
+    #complete the payload with the provided parameters
     request_payload = {
         "action": action,
         "user_id": user_id,
@@ -129,10 +134,13 @@ def send_request(action, user_id=None, hex_key=None, email=None, year=None, role
         "year": year,
         "role": role
     }
-
+    #send payload
     socket.send_string(json.dumps(request_payload))
+    #receive payload
     response = socket.recv_string()
+    #convert payload from json to parsable string
     response_data = json.loads(response)
+    
     context.destroy()
     return response_data
 
