@@ -5,40 +5,119 @@ import json
 
 ####################################################Main#################################################
 def main():
-    while True:
-        authentication = login_operations()
-        #If the user is verified
-        if authentication == '1': 
-            print("\n")
-            print_ui("_Version_")
-            
-            while True:
-                print("\n")
-                print_ui("Home")
-                print("\n")
-                print("Please enter option: ", end=" ")
-                user_input = input().strip()
-                #Access the inventory documents
-                if user_input == "1":
-                    inventory_object = Inventory()
-                    inventory_object.main_inventory()
+    authentication = '1'
+    print("\nTest = 0. Continue = 1: ", end="")
+    first_input = input()
+    if first_input == '0':
+        test_login_operations()
+        establish_key('Q')
+        send_request('Q')
+        print("\nShutdown Successful. Goodbye.")
 
-                #elif user_input == "2":
-                    #section = "_Configuration Files_"
+    elif first_input == '1':
+        while True:
+            if authentication == '1' or authentication == '0':
+                authentication = login_operations()
+                #If the user is verified
+                if authentication == '1': 
+                    print("\n")
+                    print_ui("_Version_")
 
-                #quit the main program
-                elif user_input == "Q" or user_input == "q":
-                    authentication = '2'
-                    return authentication
-        #If the user cannot be verified
-        elif authentication == '0':
-            print("\nUnable to authenticate. Please try again: ")
-        #Quit Program
-        elif authentication == '2':
-            break
+                    while True:
+                        print("\n")
+                        print_ui("Home")
+                        print("\n")
+                        print("Please enter option: ", end=" ")
+                        user_input = input().strip()
+                        #Access the inventory documents
+                        if user_input == "1":
+                            inventory_object = Inventory()
+                            inventory_object.main_inventory()
+
+                        #elif user_input == "2":
+                            #section = "_Configuration Files_"
+
+                        #quit the main program
+                        elif user_input == "Q" or user_input == "q":
+                            authentication = '2'
+                            break
+                #If the user cannot be verified
+                elif authentication == '0':
+                    print("\nUnable to authenticate. Please try again: ")
+
+            else:
+                #Quit Program
+                establish_key('Q')
+                send_request('Q')
+                break
 
 
 #################################################Functions##############################################
+
+#***************************************************************************# 
+# Type: Helper Function
+# Function Name: Login Operations
+# Description: Initiates and manages the login/sign-up process by prompting for their credentials
+# Parameters: n/a
+# Returns: returns result of login operations
+#
+#***************************************************************************#
+def test_login_operations():
+    print("\n")
+    print_ui("_Login_")
+    print("\nInitiating test protocol...")    
+    time.sleep(2)
+
+    print("\nBeginning Sign Up Sequence...")
+    time.sleep(2)
+
+    print("\nIf you have an account, login. If you are not registered, signup. ")
+    print("\nPlease enter option: ", end="")
+    time.sleep(1)
+    print("2")
+    print("\nPlease enter your user ID: ", end="")
+    time.sleep(1)
+    print("Jennifer")
+    id = "Jennifer"
+    print("\nPlease enter your Password: ", end="")
+    time.sleep(1)
+    print("rainbowSherbert42")
+    password = "rainbowSherbert42"
+    #takes the provided password and turns it into a usable key
+    password_key = establish_key(password)
+    print("\nPlease enter your email: ", end="")
+    time.sleep(1)
+    print("jennifer@hotmail.com")
+    email = "jennifer@hotmail.com"
+    print("\nPlease enter your role (""admin"", ""user""): ", end="")
+    time.sleep(1)
+    print("user")
+    role = "user"
+    send_request("Sign Up", id, password_key, email, "2024", role)
+    print("\nSuccessful. Please Login")
+
+    print("Beginning Login Sequence...")
+    time.sleep(3)
+
+    print("\nIf you have an account, login. If you are not registered, signup. ")
+    print("\nPlease enter option: ", end="")
+    time.sleep(1)
+    print("1")
+    print("\nPlease enter your user ID: ", end="")
+    time.sleep(1)
+    print("Jennifer")
+    id = "Jennifer"
+    print("\nPlease enter your Password: ", end="")
+    time.sleep(1)
+    print("rainbowSherbert42")
+    password = "rainbowSherbert42"
+    #takes the provided password and turns it into a usable key
+    password_key = establish_key(password)
+    response_data = send_request("Login", id, password_key)
+    print(f"Successful! Received: {response_data}")
+    
+    print("\nInitiating Program Shutdown...")
+    time.sleep(2)
 
 #***************************************************************************# 
 # Type: Helper Function
@@ -101,8 +180,7 @@ def login_operations():
         #Quit program
         elif user_input == "Q" or user_input == "q":
             #returns "2" from both functions to kill the servers
-            authentication  = establish_key('2')
-            null = send_request('Q')
+            authentication = '2'
             return authentication 
 
         else:
@@ -160,7 +238,7 @@ def establish_key(password):
     #bind the socket using the correct protocol and port # 5555
     socket.connect("tcp://localhost:5555")
 
-    if password == '2':
+    if password == 'Q':
         #Kill server processing.
         socket.send_string('Q')
         return '2'

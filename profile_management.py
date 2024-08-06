@@ -7,6 +7,10 @@ user_profile_database = {
     "Wyatt": {
         "hex_key": "0x480x760x310x320x330x340x350x360x37",
         "data": ["wyatt@gmail.com", "2024", "admin"]
+    },
+    "James": {
+        "hex_key": "0x480x610x700x700x790x470x6f0x4c0x750x630x6b0x79",
+        "data": ["james@yahoo.com", "2024", "user"]
     }
 }
 
@@ -84,7 +88,8 @@ while True:
         #If the action is to kill the server
         if action == 'Q':
             print("\nProcess Killed.")
-            context.destroy()
+            response = json.dumps({"message": "Server shutting down"})
+            socket.send_string(response)
             break
         #if the action is to login
         elif action == 'Login':
@@ -98,3 +103,5 @@ while True:
             socket.send_string(response)
 
     time.sleep(3)
+
+context.destroy()
