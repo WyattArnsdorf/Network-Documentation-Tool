@@ -56,10 +56,10 @@ def main():
 
 #***************************************************************************# 
 # Type: Helper Function
-# Function Name: Login Operations
-# Description: Initiates and manages the login/sign-up process by prompting for their credentials
+# Function Name: Test Login Operations
+# Description: Runs a predefined protocol test function for the main program
 # Parameters: n/a
-# Returns: returns result of login operations
+# Returns: n/a
 #
 #***************************************************************************#
 def test_login_operations():
